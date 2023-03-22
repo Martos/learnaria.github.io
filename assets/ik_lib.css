@@ -928,5 +928,5 @@ button[disabled]:focus {
   font-weight: bold;
 }
 .buttongroup .underline {
-  text-decoration: underline;
+  /*text-decoration: underline;*/
 }
