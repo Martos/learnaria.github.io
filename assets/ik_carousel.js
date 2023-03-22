@@ -38,7 +38,9 @@
 			})
 			.addClass('ik_carousel')
 			.on('mouseenter', {'plugin': plugin}, plugin.stopTimer)
+			.on('focusin', {'plugin': plugin}, plugin.stopTimer)
 			.on('mouseleave', {'plugin': plugin}, plugin.startTimer)
+			.on('focusout', {'plugin': plugin}, plugin.startTimer)
 		
 		$controls = $('<div/>')
 
@@ -66,13 +68,15 @@
 				
 				$me = $(el);
 				$src = $me.find('img').remove().attr('src');
-				
+
 				$me.css({
 						'background-image': 'url(' + $src + ')'
 					});	
 				
 				$('<li/>')
+					.attr('tabindex', '0')
 					.on('click', {'plugin': plugin, 'slide': i}, plugin.gotoSlide)
+					.on('keydown', {'plugin': plugin }, plugin.onKeyDown)
 					.appendTo($navbar);
 			});
 		
@@ -82,6 +86,21 @@
 		plugin.startTimer({'data':{'plugin': plugin}});
 		
 	};
+
+	Plugin.prototype.onKeyDown = function(event) {
+		var plugin = event.data.plugin;
+		
+		switch(event.keyCode) {
+			case ik_utils.keys.left:
+				event.data = {'plugin': plugin, 'slide': 'left'};
+				plugin.gotoSlide(event);
+				break;
+			case ik_utils.keys.right:
+				event.data = {'plugin': plugin, 'slide': 'right'};
+				plugin.gotoSlide(event);
+				break;
+		}
+	}
 	
 	/** 
 	 * Starts carousel timer. 
@@ -102,6 +121,8 @@
 		}
 		
 		plugin.timer = setInterval(plugin.gotoSlide, plugin.options.animationSpeed, {'data':{'plugin': plugin, 'slide': 'right'}});
+
+		$elem.remove('aria-live');
 		
 	};
 	
@@ -114,9 +135,12 @@
 	 */
 	Plugin.prototype.stopTimer = function (event) {
 		
+		$elem = $(this);
 		var plugin = event.data.plugin;
 		clearInterval(plugin.timer);
 		plugin.timer = null;
+
+		$elem.attr('aria-live', 'polite');
 		
 	};
 	
