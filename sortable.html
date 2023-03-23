@@ -21,18 +21,18 @@
 	<body>
 		<main>
 			<a href="index.html">&larr; Index</a>
-			<h1>Sortable List</h1>
-			<p>Lorem ipsum dolor sit, consectetur adipiscing elit. Sed blandit pellentesque felis eget venenatis. Duis venenatis consectetur lacinia. Proin elementum eu justo vel dignissim.</p>
-			<ul class="list">
-				<li>Apples</li>
-				<li>Oranges</li>
-				<li>Bananas</li>
-				<li>Pears</li>
-				<li>Plums</li>
-				<li>Peaches</li>
-				<li>Cherries</li>
-				<li>Persimmons</li>
-				<li>Quinces</li>
+			<h1 tabindex="0">Sortable List</h1>
+			<p id="list_label">Lorem ipsum dolor sit, consectetur adipiscing elit. Sed blandit pellentesque felis eget venenatis. Duis venenatis consectetur lacinia. Proin elementum eu justo vel dignissim.</p>
+			<ul class="list" aria-describedby="list_label">
+				<li title="Apples">Apples</li>
+				<li title="Oranges">Oranges</li>
+				<li title="Bananas">Bananas</li>
+				<li title="Pears">Pears</li>
+				<li title="Plums">Plums</li>
+				<li title="Peaches">Peaches</li>
+				<li title="Cherries">Cherries</li>
+				<li title="Persimmons">Persimmons</li>
+				<li title="Quinces">Quinces</li>
 			</ul>
 		</main>
 	</body>

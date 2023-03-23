@@ -30,7 +30,8 @@ var pluginName = "ik_sortable",
 			
 			$(el).attr({
 				'draggable': true,
-				'id': id + '_' + i
+				'id': id + '_' + i,
+				'tabindex': '0'
 			});
 		})
 		.on('dragstart', {'plugin': plugin}, plugin.onDragStart)
@@ -38,10 +39,28 @@ var pluginName = "ik_sortable",
 		.on('dragend', {'plugin': plugin}, plugin.onDragEnd)
 		.on('dragenter', {'plugin': plugin}, plugin.onDragEnter)
 		.on('dragover', {'plugin': plugin}, plugin.onDragOver)
-		.on('dragleave', {'plugin': plugin}, plugin.onDragLeave);
+		.on('dragleave', {'plugin': plugin}, plugin.onDragLeave)
+		.on('keydown', {'plugin': plugin}, plugin.onKeyPressed);
 		
 		
 	};
+
+	Plugin.prototype.onKeyPressed = function(event) {
+		var plugin = event.data.plugin;
+		var key = event.originalEvent.code;
+		$me = $(event.currentTarget);
+
+		if(key == 'ArrowUp') {
+			$me.insertBefore($me.prev());
+			$me.focus();
+			plugin.resetNumbering(plugin);
+		}
+		if(key == 'ArrowDown') {
+			$me.insertAfter($me.next());
+			$me.focus();
+			plugin.resetNumbering(plugin);
+		}
+	}
 	
 	// dragged item
 	
@@ -73,8 +92,10 @@ var pluginName = "ik_sortable",
 			
 			if ($me.hasClass('dropafter')) {
 				$me.after($('#' + source_id));
+				plugin.resetNumbering(plugin);
 			} else {
 				$me.before($('#' + source_id));
+				plugin.resetNumbering(plugin);
 			}
 			
 		}
